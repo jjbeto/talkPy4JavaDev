@@ -3,6 +3,7 @@
 
 java/gradle
 java/.gradlew
+Java/build
 
 python/Pipfile
 python/Pipfile.lock
