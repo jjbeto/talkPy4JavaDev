@@ -21,7 +21,7 @@ import static java.util.Arrays.stream;
 
 public class ClientCode {
 
-    private final String targetServer = "http://localhost:5000/api/";
+    private final String targetServer = "http://localhost:8080/api/";
     private final String sourceUrl = "https://raw.githubusercontent.com/jjbeto/talkPy4JavaDevResources/master/johns_hopkins/";
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
     private final RestTemplate restTemplate = new RestTemplate();
