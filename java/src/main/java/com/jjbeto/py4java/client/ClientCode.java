@@ -23,15 +23,19 @@ public class ClientCode {
 
     private final String targetServer = "http://localhost:8080/api/";
     private final String sourceUrl = "https://raw.githubusercontent.com/jjbeto/talkPy4JavaDevResources/master/johns_hopkins/";
+    private final String confirmedPath = "time_series_covid19_confirmed_global.csv";
+    private final String deathsPath = "time_series_covid19_deaths_global.csv";
+    private final String recoveredPath = "time_series_covid19_recovered_global.csv";
+
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("M/d/yy");
     private final RestTemplate restTemplate = new RestTemplate();
 
     public static void main(String[] args) throws Exception {
         ClientCode clientCode = new ClientCode();
 
-        List<Statistics> confirmed = clientCode.loadStatistics("time_series_covid19_confirmed_global.csv");
-        List<Statistics> deaths = clientCode.loadStatistics("time_series_covid19_deaths_global.csv");
-        List<Statistics> recovered = clientCode.loadStatistics("time_series_covid19_recovered_global.csv");
+        List<Statistics> confirmed = clientCode.loadStatistics(clientCode.confirmedPath);
+        List<Statistics> deaths = clientCode.loadStatistics(clientCode.deathsPath);
+        List<Statistics> recovered = clientCode.loadStatistics(clientCode.recoveredPath);
         List<Statistics> sick = clientCode.loadSickStatistics(confirmed, deaths, recovered);
 
         clientCode.sendStatistics("confirmed", confirmed);
@@ -96,7 +100,7 @@ public class ClientCode {
         return data;
     }
 
-    // step 4: add extra data
+    // step 4: add extra data (percentage change)
     private void addPctChange(List<Statistics> statistics) {
         statistics.forEach(stat -> {
             for (Map.Entry<LocalDate, Row> row : stat.getValues().entrySet()) {
@@ -115,6 +119,7 @@ public class ClientCode {
         });
     }
 
+    // step 4: add extra data (sick)
     public List<Statistics> loadSickStatistics(List<Statistics> confirmed, List<Statistics> deaths, List<Statistics> recovered) {
         List<Statistics> sickList = new ArrayList<>();
         for (Statistics stat : confirmed) {
