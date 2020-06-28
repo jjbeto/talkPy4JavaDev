@@ -6,7 +6,7 @@ public class ClientCode {
     private final String sourceUrl = "https://raw.githubusercontent.com/jjbeto/talkPy4JavaDevResources/master/johns_hopkins/";
     private final String confirmedPath = "time_series_covid19_confirmed_global.csv";
     private final String deathsPath = "time_series_covid19_deaths_global.csv";
-    private final String recoveredPath = "time_series_covid19_confirmed_global.csv";
+    private final String recoveredPath = "time_series_covid19_recovered_global.csv";
 
     // step 1: load the csv from the url
     // step 2: read csv header and and load lines
