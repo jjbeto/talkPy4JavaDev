@@ -7,3 +7,4 @@ java/.gradlew
 python/Pipfile
 python/Pipfile.lock
 python/__pycache__
+python/venv
