@@ -13,18 +13,17 @@ def convert_to_statistics(df):
 
     data = []
     for country in df.index:
-        aggregated_stat = {
-            'country': country,
-            'values': {}
-        }
+        stat = {'country': country, 'values': {}}
         for date in list(df.columns.values):
             formatted_date = datetime.strptime(date, '%m/%d/%y').strftime('%Y-%m-%d')
-            pct_change = float(df_change[country][date])
-            aggregated_stat['values'][formatted_date] = {
-                "value": int(df[date][country]),
-                "pctChange": pct_change if not math.isnan(pct_change) else None
+            value = df[date][country]
+            value_changed = df_change[country][date]
+
+            stat['values'][formatted_date] = {
+                'value': int(value),
+                'pctChange': float(value_changed) if not math.isnan(value_changed) else None
             }
-        data.append(aggregated_stat)
+        data.append(stat)
     return data
 
 
@@ -33,20 +32,14 @@ def load_sick(confirmed, deaths, recovered):
 
 
 def load_file(file):
-    try:
-        df = pd.read_csv(f'{source_url}/{file}')
-        return df.set_index('country')
-    except Exception as e:
-        print(e)
-    return None
+    df = pd.read_csv(f'{source_url}/{file}')
+    return df.set_index('country')
 
 
 def send_data(data, target):
-    responses = [requests.post(f'{target_server}{target}/python', json=json).status_code for json in data]
-    result = {}
-    for code in set(responses):
-        result[code] = responses.count(code)
-    print(f"{target}: {result}")
+    url = f'{target_server}{target}/python'
+    responses = [requests.post(url, json=json).status_code for json in data]
+    print(target, {i: responses.count(i) for i in responses})
 
 
 if __name__ == '__main__':
